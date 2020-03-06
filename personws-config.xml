@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <database>
+        <url>jdbc:postgresql://db:5432/postgres</url>
+        <user>postgres</user>
+        <password>qw!</password>
+    </database>
+    <hostUrl>https://app.vs4.ru</hostUrl>
+</root>

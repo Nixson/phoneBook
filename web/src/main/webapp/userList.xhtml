@@ -1,0 +1,80 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+    <h:outputScript library="js" name="bootstrap.min.js"/>
+</h:head>
+
+<h:body style="background: whitesmoke">
+    <div class="container-fluid">
+        <br/>
+        <h2>#{ulMsg['title']} <span class="badge badge-secondary">#{userListBean.totalCount}</span></h2>
+
+        <h:form>
+            <div class="row">
+                <div class="col-auto mr-auto">
+                    <h:commandButton action="#{userListBean.add()}" value="#{ulMsg['add']}" styleClass="btn btn-outline-primary"/>
+                </div>
+                <div class="col-auto">
+                    <h:commandButton action="#{userListBean.logout()}" value="#{ulMsg['logout']}" styleClass="btn btn-outline-secondary"/>
+                </div>
+            </div>
+        </h:form>
+
+        <h:form>
+            <div class="input-group">
+                <h:inputText id="search" a:placeholder="#{ulMsg['find.text']}" value="#{userListBean.searchText}"
+                             styleClass="form-control" aria-describedby="basic-addon2"/>
+                <div class="input-group-append">
+                    <h:commandButton action="#{userListBean.find()}" value="#{ulMsg['find']}" styleClass="btn btn-primary"/>
+                    <h:commandButton action="#{userListBean.clear()}" value="#{ulMsg['clear']}" styleClass="btn btn-info"/>
+                </div>
+            </div>
+        </h:form>
+
+        <h:panelGroup rendered="#{userListBean.personList.size() != 0}">
+            <div class="list-group">
+                <ui:repeat value="#{userListBean.personList}" var="person" varStatus="loop">
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="media">
+                            <h:graphicImage rendered="#{person.image == null}" name="images/no-photo.png" styleClass="mr-3" width="100px" height="100px"/>
+                            <h:graphicImage rendered="#{person.image != null}" value="data:image/jpg;base64,#{person.image}" alt="Photo" styleClass="mr-3" width="100px" height="100px"/>
+                            <div class="media-body">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">#{person.lastName} #{person.firstName} #{person.middleName}</h5>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div>Phone: +7(#{person.phoneCode})#{person.phoneNumber}, Login: #{person.login}</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:form>
+                                            <h:commandButton styleClass="btn btn-outline-info" value="#{ulMsg['edit']}" action="#{userListBean.edit(person)}"/>
+                                            <h:commandButton styleClass="btn btn-outline-danger ml-2" value="#{ulMsg['delete']}" action="#{userListBean.delete(person)}"/>
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </ui:repeat>
+            </div>
+        </h:panelGroup>
+
+        <h:panelGroup rendered="#{userListBean.personList.size() == 0}">
+            <div class="alert alert-dark" role="alert">
+                #{ulMsg['noRecords']}
+            </div>
+        </h:panelGroup>
+    </div>
+
+</h:body>
+</html>
